@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="pt-br" data-bs-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Calculadora IAP 2026.1 - Java, Algoritmos e Programação. Cálculo de notas, avaliação presencial, PDF, e-mail e WhatsApp.">
+  <title>Calculadora IAP | Java e Algoritmos</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <script defer src="https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js"></script>
+  <style>
+    :root{--sidebar:#0f172a;--brand:#0ea5e9;--admin:#1f2937;--card:#ffffff;--body:#f4f6f9;--line:#d8dee9;--blue:#0d6efd;--ok:#198754;--warn:#ffc107;}
+    body{background:var(--body);font-family:Arial,Helvetica,sans-serif;color:#1f2937;}
+    .app{display:flex;min-height:100vh;}
+    .sidebar{width:270px;background:linear-gradient(180deg,#0f172a,#111827);color:#fff;position:fixed;left:0;top:0;bottom:0;padding:18px 14px;z-index:1000;}
+    .brand{display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,.15);padding-bottom:14px;margin-bottom:14px;}
+    .brand-icon{width:42px;height:42px;border-radius:12px;background:var(--brand);display:grid;place-items:center;font-size:1.4rem;}
+    .nav-title{font-size:.75rem;color:#94a3b8;text-transform:uppercase;margin:20px 10px 8px;}
+    .nav-link{color:#cbd5e1;border-radius:10px;padding:10px 12px;margin-bottom:4px;}
+    .nav-link:hover,.nav-link.active{background:rgba(14,165,233,.18);color:#fff;}
+    .content{margin-left:270px;width:calc(100% - 270px);}
+    .topbar{background:#fff;border-bottom:1px solid var(--line);padding:14px 22px;position:sticky;top:0;z-index:900;}
+    .page{padding:22px;}
+    .small-box{border-radius:16px;color:#fff;padding:18px;box-shadow:0 8px 24px rgba(15,23,42,.09);min-height:130px;position:relative;overflow:hidden;}
+    .small-box i{position:absolute;right:18px;bottom:10px;font-size:3.5rem;opacity:.25;}
+    .bg-a{background:linear-gradient(135deg,#0d6efd,#0ea5e9)}.bg-b{background:linear-gradient(135deg,#198754,#20c997)}.bg-c{background:linear-gradient(135deg,#fd7e14,#ffc107)}.bg-d{background:linear-gradient(135deg,#6f42c1,#d63384)}
+    .card{border:0;border-radius:16px;box-shadow:0 8px 24px rgba(15,23,42,.08);}
+    .card-header{background:#fff;border-bottom:1px solid var(--line);border-radius:16px 16px 0 0!important;font-weight:700;}
+    .table-grade{border:1px solid #1992d4;font-size:.94rem;}
+    .table-grade thead th{background:#075985;color:#fff;border-color:#38bdf8;text-align:center;}
+    .table-grade tbody tr:nth-child(odd){background:#e0f2fe;}
+    .table-grade tbody tr:nth-child(even){background:#fff;}
+    .table-grade td,.table-grade th{border-color:#38bdf8;vertical-align:middle;}
+    .table-grade tfoot th{background:#075985;color:#fff;border-color:#38bdf8;}
+    .score{max-width:120px;margin:auto;text-align:right;}
+    .section-anchor{scroll-margin-top:90px;}
+    .formula{background:#0f172a;color:#dbeafe;border-radius:12px;padding:14px;font-family:Consolas,monospace;}
+    .print-only{display:none;}
+    @media (max-width:991px){.sidebar{position:relative;width:100%;height:auto}.app{display:block}.content{margin-left:0;width:100%}.topbar{position:relative}.page{padding:14px}}
+    @media print{.sidebar,.topbar,.no-print,.btn,.form-text{display:none!important}.content{margin:0!important;width:100%!important}.page{padding:0!important}.card,.small-box{box-shadow:none!important;border:1px solid #999!important;break-inside:avoid}.print-only{display:block!important}body{background:#fff;font-size:12px}.table-grade{font-size:11px}.score{border:0!important;background:transparent!important}.progress{border:1px solid #888}a[href]:after{content:""}@page{size:A4;margin:10mm}}
+  </style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar no-print">
+    <div class="brand">
+      <div class="brand-icon"><i class="bi bi-code-slash"></i></div>
+      <div><strong>Calculadora IAP</strong><br><small>Java e Algoritmos</small></div>
+    </div>
+    <div class="nav-title">Dashboard</div>
+    <a class="nav-link active" href="#resumo"><i class="bi bi-speedometer2 me-2"></i>Resumo</a>
+    <a class="nav-link" href="#atividades"><i class="bi bi-list-check me-2"></i>Atividades</a>
+    <a class="nav-link" href="#presencial"><i class="bi bi-mortarboard me-2"></i>Avaliação Presencial</a>
+    <a class="nav-link" href="#relatorio"><i class="bi bi-file-earmark-pdf me-2"></i>PDF, E-mail e WhatsApp</a>
+    <div class="nav-title">Regra</div>
+    <div class="px-2 small text-secondary-emphasis text-white-50">Total: 500 pontos<br>Aprovação: 350 pontos<br>Presencial: AP1 + AP2 + AP3 = 260 pontos</div>
+  </aside>
+
+  <main class="content">
+    <div class="topbar no-print d-flex justify-content-between align-items-center flex-wrap gap-2">
+      <div>
+        <h1 class="h4 mb-0">Lançamento de Notas — IAP 2026.1</h1>
+        <small class="text-muted">Introdução a Algoritmos e Programação | Java | UESB/CEAD/UAB</small>
+      </div>
+      <div class="d-flex gap-2 flex-wrap">
+        <button class="btn btn-outline-secondary" onclick="limparTudo()"><i class="bi bi-eraser"></i> Limpar</button>
+        <button class="btn btn-success" onclick="imprimirResultado()"><i class="bi bi-printer"></i> Imprimir</button>
+        <button class="btn btn-danger" onclick="exportarPDF()"><i class="bi bi-filetype-pdf"></i> PDF</button>
+      </div>
+    </div>
+
+    <section class="page" id="areaRelatorio">
+      <div class="print-only mb-3 border-bottom pb-2">
+        <h2>Relatório de Desempenho — Calculadora IAP</h2>
+        <div id="printInfo"></div>
+      </div>
+
+      <section id="resumo" class="section-anchor mb-4">
+        <div class="row g-3">
+          <div class="col-md-3"><div class="small-box bg-a"><div>Total Geral</div><h2 id="cardTotal">0.00</h2><small>de 500 pontos</small><i class="bi bi-calculator"></i></div></div>
+          <div class="col-md-3"><div class="small-box bg-b"><div>Atividades</div><h2 id="cardAtividades">0.00</h2><small>de 240 pontos</small><i class="bi bi-journal-check"></i></div></div>
+          <div class="col-md-3"><div class="small-box bg-c"><div>Presencial</div><h2 id="cardPresencial">0.00</h2><small>de 260 pontos</small><i class="bi bi-mortarboard"></i></div></div>
+          <div class="col-md-3"><div class="small-box bg-d"><div>Situação</div><h2 id="cardSituacao">---</h2><small id="cardFalta">Preencha as notas</small><i class="bi bi-award"></i></div></div>
+        </div>
+      </section>
+
+      <div class="row g-4">
+        <div class="col-xl-8">
+          <section id="atividades" class="card section-anchor mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center"><span><i class="bi bi-list-check me-2"></i>Atividades lançadas antes das avaliações</span><span class="badge text-bg-primary">240 pontos</span></div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-grade mb-0" id="tabelaAtividades">
+                  <thead><tr><th style="width:45%">Atividade</th><th>Pontuação</th><th>Nota obtida</th><th>% da etapa</th><th>% do total</th></tr></thead>
+                  <tbody id="corpoAtividades"></tbody>
+                  <tfoot><tr><th>Total de Atividades</th><th class="text-center">240</th><th class="text-end" id="totalAtividadesTabela">0.00</th><th colspan="2" id="pctAtividadesTabela">0%</th></tr></tfoot>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <section id="presencial" class="card section-anchor mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center"><span><i class="bi bi-mortarboard me-2"></i>Avaliação Presencial — lançamento separado</span><span class="badge text-bg-warning text-dark">260 pontos</span></div>
+            <div class="card-body">
+              <div class="row g-3 align-items-end mb-3 no-print">
+                <div class="col-md-4">
+                  <label class="form-label fw-bold">Simulador pela nota da prova</label>
+                  <input type="number" class="form-control" id="notaProvaSimulador" min="0" max="16" step="0.01" value="">
+                  <div class="form-text">Opcional: digite 0 a 16 e clique em aplicar.</div>
+                </div>
+                <div class="col-md-4">
+                  <button class="btn btn-warning w-100" onclick="aplicarNotaProporcional()"><i class="bi bi-magic"></i> Aplicar proporção</button>
+                  <div class="form-text">Preenche AP1, AP2 e AP3 automaticamente.</div>
+                </div>
+                <div class="col-md-4">
+                  <div class="formula">AP1 = (nota ÷ 16) × 60<br>AP2 = (nota ÷ 16) × 100<br>AP3 = (nota ÷ 16) × 100</div>
+                </div>
+              </div>
+
+              <p class="small text-muted mb-3">
+                Pela regra da professora, a prova de 16 pontos equivale a 260 pontos no Moodle. Como as três avaliações foram lançadas separadamente, informe abaixo os pontos efetivamente lançados em cada avaliação.
+              </p>
+
+              <div class="table-responsive">
+                <table class="table table-grade mb-0">
+                  <thead><tr><th>Avaliação</th><th>Pontuação máxima</th><th>Nota lançada</th><th>% da avaliação</th></tr></thead>
+                  <tbody>
+                    <tr>
+                      <td>Avaliação Presencial I Unidade</td>
+                      <td class="text-center">60</td>
+                      <td><input class="form-control form-control-sm score notaPresencial" type="number" id="ap1Nota" min="0" max="60" step="0.01" value="0" data-max="60"></td>
+                      <td class="text-center" id="ap1pct">0%</td>
+                    </tr>
+                    <tr>
+                      <td>Avaliação Presencial II Unidade</td>
+                      <td class="text-center">100</td>
+                      <td><input class="form-control form-control-sm score notaPresencial" type="number" id="ap2Nota" min="0" max="100" step="0.01" value="0" data-max="100"></td>
+                      <td class="text-center" id="ap2pct">0%</td>
+                    </tr>
+                    <tr>
+                      <td>Avaliação Presencial III Unidade</td>
+                      <td class="text-center">100</td>
+                      <td><input class="form-control form-control-sm score notaPresencial" type="number" id="ap3Nota" min="0" max="100" step="0.01" value="0" data-max="100"></td>
+                      <td class="text-center" id="ap3pct">0%</td>
+                    </tr>
+                  </tbody>
+                  <tfoot><tr><th>Total Presencial</th><th class="text-center">260</th><th class="text-end" id="totalPresencialTabela">0.00</th><th id="pctPresencialTabela">0% da presencial</th></tr></tfoot>
+                </table>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="col-xl-4">
+          <section class="card mb-4">
+            <div class="card-header"><i class="bi bi-graph-up-arrow me-2"></i>Média e aprovação</div>
+            <div class="card-body">
+              <div class="mb-2 d-flex justify-content-between"><span>Pontuação total</span><strong id="resTotal">0.00 / 500</strong></div>
+              <div class="progress mb-3" style="height:24px"><div id="barraTotal" class="progress-bar" style="width:0%">0%</div></div>
+              <div id="alertaSituacao" class="alert alert-warning">Informe as notas para calcular.</div>
+              <hr>
+              <div class="d-flex justify-content-between"><span>Média equivalente</span><strong id="media10">0.00</strong></div>
+              <div class="d-flex justify-content-between"><span>Faltam para 350</span><strong id="faltam350">350.00</strong></div>
+            </div>
+          </section>
+
+          <section id="relatorio" class="card section-anchor mb-4">
+            <div class="card-header"><i class="bi bi-send me-2"></i>Exportação e envio</div>
+            <div class="card-body">
+              <label class="form-label fw-bold">E-mail de destino</label>
+              <input type="email" class="form-control mb-2" id="emailDestino" placeholder="email@exemplo.com">
+              <label class="form-label fw-bold">WhatsApp</label>
+              <input type="tel" class="form-control mb-3" id="whatsappDestino" placeholder="5599999999999">
+              <div class="d-grid gap-2 no-print">
+                <button class="btn btn-outline-primary" onclick="enviarEmailMailto()"><i class="bi bi-envelope"></i> Enviar por e-mail</button>
+                <button class="btn btn-outline-success" onclick="enviarWhatsApp()"><i class="bi bi-whatsapp"></i> Enviar por WhatsApp</button>
+                <button class="btn btn-danger" onclick="exportarPDF()"><i class="bi bi-filetype-pdf"></i> Exportar PDF</button>
+              </div>
+              <p class="small text-muted mt-3 mb-0">Em GitHub Pages, o envio real por gateway precisa de backend. Esta versão usa mailto e link do WhatsApp. Para gateway real: Resend/Brevo para e-mail e Evolution API/WhatsApp Cloud API para WhatsApp.</p>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+const ATIVIDADES = [
+  ['Laboratório 1',12],['Laboratório 2',12],['Laboratório 3',12],['Laboratório 4',12],['Laboratório 5',12],
+  ['Laboratório 6',10],['Laboratório 7',10],['Laboratório 8',10],['Laboratório 9',10],['Laboratório 10',10],['Laboratório 11',10],['Laboratório 12',10],
+  ['Fórum 1',10],['Fórum 2',10],
+  ['Lista 1 Parte 1',15],['Lista 1 Parte 2',15],
+  ['Lista 2 Parte 1',20],['Lista 2 Parte 2',20],['Lista 2 Parte 3',20]
+];
+const MAX_ATIVIDADES = 240, MAX_PRESENCIAL = 260, MAX_TOTAL = 500, APROVACAO = 350;
+function n(v){return Number(v||0)}
+function fmt(v){return n(v).toFixed(2)}
+function pct(v,max){return max?Math.round((n(v)/max)*100):0}
+function limitar(input){let max=n(input.dataset.max || input.max);let valor=n(input.value);if(valor>max){valor=max;input.value=max} if(valor<0){valor=0;input.value=0} return valor}
+
+function montar(){
+  const tb=document.getElementById('corpoAtividades');
+  tb.innerHTML='';
+  ATIVIDADES.forEach((a,i)=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${a[0]}</td><td class="text-center">${a[1]}</td><td><input class="form-control form-control-sm score notaAtividade" type="number" min="0" max="${a[1]}" step="0.01" value="0" data-max="${a[1]}" data-index="${i}"></td><td class="text-center" id="pctEtapa${i}">0%</td><td class="text-center" id="pctTotal${i}">0%</td>`;
+    tb.appendChild(tr);
+  });
+  document.querySelectorAll('.notaAtividade,.notaPresencial,#emailDestino,#whatsappDestino').forEach(e=>e.addEventListener('input',calcular));
+  carregar();
+  calcular();
+}
+
+function calcular(){
+  let totalAtv=0;
+  document.querySelectorAll('.notaAtividade').forEach((input,i)=>{
+    let max=n(input.dataset.max);
+    let valor=limitar(input);
+    totalAtv+=valor;
+    document.getElementById('pctEtapa'+i).innerText=pct(valor,max)+'%';
+    document.getElementById('pctTotal'+i).innerText=((valor/MAX_TOTAL)*100).toFixed(1)+'%';
+  });
+
+  let ap1=limitar(document.getElementById('ap1Nota'));
+  let ap2=limitar(document.getElementById('ap2Nota'));
+  let ap3=limitar(document.getElementById('ap3Nota'));
+  let totalPres=ap1+ap2+ap3;
+  let total=totalAtv+totalPres;
+
+  document.getElementById('ap1pct').innerText=pct(ap1,60)+'%';
+  document.getElementById('ap2pct').innerText=pct(ap2,100)+'%';
+  document.getElementById('ap3pct').innerText=pct(ap3,100)+'%';
+  document.getElementById('totalAtividadesTabela').innerText=fmt(totalAtv);
+  document.getElementById('pctAtividadesTabela').innerText=pct(totalAtv,MAX_ATIVIDADES)+'% das atividades';
+  document.getElementById('totalPresencialTabela').innerText=fmt(totalPres);
+  document.getElementById('pctPresencialTabela').innerText=pct(totalPres,MAX_PRESENCIAL)+'% da presencial';
+  document.getElementById('cardTotal').innerText=fmt(total);
+  document.getElementById('cardAtividades').innerText=fmt(totalAtv);
+  document.getElementById('cardPresencial').innerText=fmt(totalPres);
+  document.getElementById('resTotal').innerText=`${fmt(total)} / 500`;
+  document.getElementById('media10').innerText=fmt(total/50);
+  let falta=Math.max(APROVACAO-total,0);
+  document.getElementById('faltam350').innerText=fmt(falta);
+  let perc=Math.min((total/MAX_TOTAL)*100,100);
+  let barra=document.getElementById('barraTotal');
+  barra.style.width=perc+'%';
+  barra.innerText=perc.toFixed(1)+'%';
+  let alerta=document.getElementById('alertaSituacao');
+  alerta.className='alert';
+  if(total>=APROVACAO){
+    alerta.classList.add('alert-success');
+    alerta.innerHTML='<strong>Aprovado.</strong> Pontuação igual ou superior a 350 pontos.';
+    document.getElementById('cardSituacao').innerText='Aprovado';
+    document.getElementById('cardFalta').innerText='Meta atingida';
+  }else{
+    alerta.classList.add('alert-warning');
+    alerta.innerHTML=`<strong>Ainda não aprovado.</strong> Faltam ${fmt(falta)} ponto(s).`;
+    document.getElementById('cardSituacao').innerText='Pendente';
+    document.getElementById('cardFalta').innerText=`Faltam ${fmt(falta)}`;
+  }
+  salvar();
+}
+
+function aplicarNotaProporcional(){
+  let nota=n(document.getElementById('notaProvaSimulador').value);
+  if(nota>16){nota=16;document.getElementById('notaProvaSimulador').value=16}
+  if(nota<0){nota=0;document.getElementById('notaProvaSimulador').value=0}
+  document.getElementById('ap1Nota').value=fmt((nota/16)*60);
+  document.getElementById('ap2Nota').value=fmt((nota/16)*100);
+  document.getElementById('ap3Nota').value=fmt((nota/16)*100);
+  calcular();
+}
+
+function dadosResumo(){
+  calcular();
+  let total=document.getElementById('cardTotal').innerText;
+  let atividades=document.getElementById('cardAtividades').innerText;
+  let presencial=document.getElementById('cardPresencial').innerText;
+  let ap1=document.getElementById('ap1Nota').value;
+  let ap2=document.getElementById('ap2Nota').value;
+  let ap3=document.getElementById('ap3Nota').value;
+  let media=document.getElementById('media10').innerText;
+  let situacao=document.getElementById('cardSituacao').innerText;
+  return `Calculadora IAP - Resultado\nAtividades: ${atividades}/240\nAP1: ${ap1}/60\nAP2: ${ap2}/100\nAP3: ${ap3}/100\nAvaliação presencial: ${presencial}/260\nTotal: ${total}/500\nMédia equivalente: ${media}\nSituação: ${situacao}\nSite: https://thiagopratesnet.github.io/calculadora-iap/`;
+}
+
+function enviarEmailMailto(){
+  calcular();
+  let email=document.getElementById('emailDestino').value.trim();
+  let body=encodeURIComponent(dadosResumo());
+  let subject=encodeURIComponent('Resultado Calculadora IAP');
+  window.location.href=`mailto:${email}?subject=${subject}&body=${body}`;
+}
+
+function enviarWhatsApp(){
+  calcular();
+  let fone=document.getElementById('whatsappDestino').value.replace(/\D/g,'');
+  let texto=encodeURIComponent(dadosResumo());
+  let url=fone?`https://wa.me/${fone}?text=${texto}`:`https://wa.me/?text=${texto}`;
+  window.open(url,'_blank');
+}
+
+function imprimirResultado(){
+  calcular();
+  document.getElementById('printInfo').innerText='Gerado em '+new Date().toLocaleString('pt-BR');
+  window.print();
+}
+
+function exportarPDF(){
+  calcular();
+  document.getElementById('printInfo').innerText='Gerado em '+new Date().toLocaleString('pt-BR');
+  const opt={margin:8,filename:'resultado-calculadora-iap.pdf',image:{type:'jpeg',quality:0.98},html2canvas:{scale:2},jsPDF:{unit:'mm',format:'a4',orientation:'portrait'}};
+  html2pdf().set(opt).from(document.getElementById('areaRelatorio')).save();
+}
+
+function salvar(){
+  const dados={
+    simulador:document.getElementById('notaProvaSimulador').value,
+    ap1:document.getElementById('ap1Nota').value,
+    ap2:document.getElementById('ap2Nota').value,
+    ap3:document.getElementById('ap3Nota').value,
+    email:document.getElementById('emailDestino').value,
+    whatsapp:document.getElementById('whatsappDestino').value,
+    notas:[...document.querySelectorAll('.notaAtividade')].map(e=>e.value)
+  };
+  localStorage.setItem('calculadora_iap_2026',JSON.stringify(dados));
+}
+
+function carregar(){
+  try{
+    const dados=JSON.parse(localStorage.getItem('calculadora_iap_2026')||'{}');
+    if(dados.simulador)document.getElementById('notaProvaSimulador').value=dados.simulador;
+    if(dados.ap1)document.getElementById('ap1Nota').value=dados.ap1;
+    if(dados.ap2)document.getElementById('ap2Nota').value=dados.ap2;
+    if(dados.ap3)document.getElementById('ap3Nota').value=dados.ap3;
+    if(dados.email)document.getElementById('emailDestino').value=dados.email;
+    if(dados.whatsapp)document.getElementById('whatsappDestino').value=dados.whatsapp;
+    if(dados.notas)document.querySelectorAll('.notaAtividade').forEach((e,i)=>e.value=dados.notas[i]||0);
+  }catch(e){}
+}
+
+function limparTudo(){
+  if(confirm('Deseja limpar todas as notas?')){
+    localStorage.removeItem('calculadora_iap_2026');
+    document.querySelectorAll('.notaAtividade,.notaPresencial').forEach(e=>e.value=0);
+    document.getElementById('notaProvaSimulador').value='';
+    document.getElementById('emailDestino').value='';
+    document.getElementById('whatsappDestino').value='';
+    calcular();
+  }
+}
+montar();
+</script>
+</body>
+</html>
